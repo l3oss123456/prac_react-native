@@ -17,6 +17,7 @@ import {
 import * as R from 'ramda';
 import calendar from '../../../../utils/calendar';
 import Dropdownlist from '../../../../components/Dropdownlist/index';
+// import DateTimePickerModal from "react-native-modal-datetime-picker";
 import theme from '../../../../cores/theme/index';
 
 const FormTemplate = ({history, match, location, data}) => {
@@ -28,6 +29,7 @@ const FormTemplate = ({history, match, location, data}) => {
   const {date, month, year} = calendar;
   const [text, setText] = useState({});
   const [themeSelected, setThemeSelected] = useState('lightTheme');
+  const [dateOption, setDateOption] = useState(!R.isEmpty(date) ? date : []);
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -85,6 +87,34 @@ const FormTemplate = ({history, match, location, data}) => {
     setText({...text, [`${type}`]: value});
   };
 
+  useEffect(() => {
+    if (!R.isNil(text.birthMonth) && !R.isEmpty(text.birthMonth)) {
+      if (!R.isNil(text.birthDate)) {
+        const _date = [];
+        if (text.birthMonth === '2') {
+          for (let i = 1; i <= 28; i++) {
+            _date.push({label: `${i}`, value: `${i}`});
+          }
+        } else if (
+          text.birthMonth === '4' ||
+          text.birthMonth === '6' ||
+          text.birthMonth === '9' ||
+          text.birthMonth === '11'
+        ) {
+          for (let i = 1; i <= 30; i++) {
+            _date.push({label: `${i}`, value: `${i}`});
+          }
+        } else {
+          for (let i = 1; i <= 31; i++) {
+            _date.push({label: `${i}`, value: `${i}`});
+          }
+        }
+        setDateOption(_date);
+        setText({...text, birthDate: '1'});
+      }
+    }
+  }, [text.birthMonth]);
+
   return (
     <View>
       {/* heading page */}
@@ -140,7 +170,7 @@ const FormTemplate = ({history, match, location, data}) => {
           alignItems: 'flex-end',
           zIndex: 1,
           position: 'absolute',
-          bottom: 0,
+          bottom: -60,
         }}>
         <View style={{flex: 0.1}}></View>
         <View style={{flex: 1}}>
@@ -171,8 +201,9 @@ const FormTemplate = ({history, match, location, data}) => {
           justifyContent: 'space-between',
         }}>
         <Dropdownlist
-          minHeight={190}
-          items={date}
+          // minHeight={190}
+          items={dateOption}
+          disabled={R.isNil(text.birthMonth) || R.isEmpty(text.birthMonth)}
           defaultValue={text.birthDate ? text.birthDate : ''}
           placeholder="Birth Date"
           containerStyle={{height: 40, marginTop: 10, width: 120}}
@@ -181,7 +212,7 @@ const FormTemplate = ({history, match, location, data}) => {
         />
 
         <Dropdownlist
-          minHeight={190}
+          // minHeight={190}
           items={month}
           defaultValue={text.birthMonth ? text.birthMonth : ''}
           placeholder="Birth Month"
@@ -191,7 +222,7 @@ const FormTemplate = ({history, match, location, data}) => {
         />
 
         <Dropdownlist
-          minHeight={190}
+          // minHeight={190}
           items={year}
           defaultValue={text.birthYear ? text.birthYear : ''}
           placeholder="Birth Year"
@@ -202,7 +233,7 @@ const FormTemplate = ({history, match, location, data}) => {
       </View>
 
       <Dropdownlist
-        minHeight={110}
+        // minHeight={110}
         items={genderOptions}
         defaultValue={text.gender ? text.gender : ''}
         placeholder="Gender"

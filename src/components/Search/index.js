@@ -42,7 +42,7 @@ const SearchComponent = ({data, setData, title}) => {
                     : '';
                 return (
                   !R.isEmpty(_filterType) &&
-                  item[`${_filterType}`].match(_searchValue)
+                  item[`${_filterType}`].toLowerCase().match(_searchValue)
                 );
               });
               search_data = [...search_data, ..._filterData];
@@ -55,7 +55,7 @@ const SearchComponent = ({data, setData, title}) => {
                 new_searchData.push({...obj});
               }
             });
-            console.log('new_searchData', new_searchData);
+            // console.log('new_searchData', new_searchData);
             setData(new_searchData);
           } catch (error) {
             console.log(

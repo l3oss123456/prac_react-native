@@ -6,6 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 const DropdownlistComponent = ({
   minHeight,
   items,
+  disabled,
   defaultValue,
   placeholder,
   containerStyle,
@@ -16,9 +17,16 @@ const DropdownlistComponent = ({
   onChangeItem,
 }) => {
   return (
-    <View style={{minHeight: !R.isNil(minHeight) ? minHeight : 120}}>
+    <View
+      // style={{minHeight: !R.isNil(minHeight) ? minHeight : 120}}
+      style={{
+        minHeight: !R.isNil(minHeight) ? minHeight : 0,
+        // minHeight: !R.isNil(minHeight) ? minHeight : 120,
+        // position: 'absolute',
+      }}>
       <DropDownPicker
         items={!R.isNil(items) && items}
+        disabled={!R.isNil(disabled) && disabled}
         defaultValue={!R.isNil(defaultValue) && defaultValue}
         placeholder={!R.isNil(placeholder) && placeholder}
         containerStyle={
@@ -35,10 +43,15 @@ const DropdownlistComponent = ({
               }
         }
         dropDownStyle={
-          !R.isNil(dropDownStyle)
-            ? dropDownStyle
-            : {backgroundColor: '#fafafa', position: 'absolute'}
+          !R.isNil(dropDownStyle) ? dropDownStyle : {backgroundColor: '#fafafa'}
         }
+        placeholderStyle={{
+          // fontWeight: 'bold',
+          textAlign: 'center',
+        }}
+        activeItemStyle={{
+          fontWeight: 'bold',
+        }}
         onChangeItem={item => {
           if (!R.isNil(onChangeItem)) {
             onChangeItem(DropdownlistName, item.value);

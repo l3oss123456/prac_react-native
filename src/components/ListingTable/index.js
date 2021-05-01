@@ -52,6 +52,7 @@ const ListingTable = ({title, data, setData, handleEdit, handleDelete}) => {
       widthArr: widthArr,
     };
   };
+  
   const getDisplayData = (title, data) => {
     const _data = data.map((item, index) => {
       const dataRow = [];
@@ -109,6 +110,7 @@ const ListingTable = ({title, data, setData, handleEdit, handleDelete}) => {
     });
     return _data;
   };
+  
   const _title = getDisplayTitle(title);
   const _data = getDisplayData(title, currentPosts);
 
